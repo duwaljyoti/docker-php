@@ -1,0 +1,22 @@
+version: '3.6'
+
+services:
+  webserver:
+    build:
+      context: ./.docker/webserver
+      dockerfile: Dockerfile
+    container_name: test_webserver
+    volumes:
+      - ./storage/logs/nginx:/var/log/nginx
+  php:
+    build:
+      context: ./.docker/php
+      dockerfile: Dockerfile
+    container_name: php_test
+  cli:
+    build:
+      context: ./.docker/cli
+      dockerfile: Dockerfile
+    container_name: cli_test_2
+    volumes:
+      - /var/www/html:/var/www/html
