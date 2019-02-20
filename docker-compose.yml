@@ -7,7 +7,9 @@ services:
       dockerfile: Dockerfile
     container_name: test_webserver
     volumes:
-      - ./storage/logs/nginx:/var/log/nginx
+      - ./storage/logs/nginx:/var/log/nginx 
+    ports:
+      - 80:80
   php:
     build:
       context: ./.docker/php
@@ -20,3 +22,23 @@ services:
     container_name: cli_test_2
     volumes:
       - /var/www/html:/var/www/html
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - 3306:3306
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 8080:80  
+    depends_on:
+      - mysql
